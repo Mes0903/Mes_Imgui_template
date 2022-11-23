@@ -2,7 +2,7 @@
 
 Build Demo Video: https://www.youtube.com/watch?v=s8-ZJp3GqcE
 
-This is a template of Imgui Project. 
+This is a template of Imgui + Implot Project. 
 
 On Windwos10, it builed by Vscode, CMake. On Linux it just builed by CMake.
 
@@ -34,7 +34,7 @@ There is a lib file `glfw3.lib` in the `include/windows/lib`, you should build i
 5. There would be a lib file called `glfw3.lib` in Debug folder, delete my `glfw3.lib` and copy your `glfw3.lib` into `include/windows/lib`.
 6. Also, there is a folder called `GLFW` in the glfw `include/windows`, delete my `GLFW` and copy your `GLFW` into `include/windows`.
 
-## OpenGL32
+## OpenGL
 
 There is a lib file `OpenGL32.Lib` in the `include/windows/lib`, you should build it by yourself. (Since the lib file on the github is depends on my environment.)
 
