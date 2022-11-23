@@ -6,15 +6,19 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(THIRD_PARTY_DIR ${PROJECT_SOURCE_DIR}/include)
 include_directories(${THIRD_PARTY_DIR}/imgui)
+include_directories(${THIRD_PARTY_DIR}/implot)
 add_subdirectory(${THIRD_PARTY_DIR})
 
-aux_source_directory(./src SRC_DIR)
-add_executable(IMGUI_DEMO ${SRC_DIR})
+add_executable(
+  IMGUI_DEMO 
+  ${PROJECT_SOURCE_DIR}/src/imgui_demo.cpp
+)
 
 if(WIN32)
   target_link_libraries(
     IMGUI_DEMO
     IMGUI_LIB
+    IMPLOT_LIB
     ${THIRD_PARTY_DIR}/windows/lib/glfw3.lib
     ${THIRD_PARTY_DIR}/windows/lib/OpenGL32.Lib
   )
@@ -29,10 +33,12 @@ elseif(UNIX)
 
   target_link_libraries(
     IMGUI_DEMO
-    ${OPENGL_LIBRARIES}
-    glfw
     IMGUI_LIB
+    IMPLOT_LIB
+    glfw
+    ${OPENGL_LIBRARIES}
   )
+
 endif()
 
 

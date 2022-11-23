@@ -1,5 +1,6 @@
 include(FetchContent)
 set(IMGUI_DIR ${THIRD_PARTY_DIR}/imgui)
+set(IMPLOT_DIR ${THIRD_PARTY_DIR}/implot)
 
 if(WIN32)
   set(WINDOWS_INCLUDE ${THIRD_PARTY_DIR}/windows)
@@ -17,3 +18,4 @@ elseif(UNIX)
 endif()
 
 add_subdirectory(imgui)
+add_subdirectory(implot)

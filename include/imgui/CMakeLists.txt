@@ -19,7 +19,7 @@ if(UNIX)
 
   target_include_directories(
     IMGUI_LIB PUBLIC
-    imgui
+    ${THIRD_PARTY_DIR}/imgui
   )
   
 elseif(WIN32)
@@ -39,7 +39,7 @@ elseif(WIN32)
 
   target_include_directories(
     IMGUI_LIB PUBLIC
-    imgui
+    ${THIRD_PARTY_DIR}/imgui
     ${WINDOWS_INCLUDE}
     ${WINDOWS_INCLUDE}
   )
