@@ -1,28 +1,19 @@
-# MesOpengl/include/CMakeLists.txt
+include(FetchContent)
+set(IMGUI_DIR ${THIRD_PARTY_DIR}/imgui)
 
-file(GLOB P_INCLUDE CONFIGURE_DEPENDS 
-    ${THIRD_PARTY_DIR}/glab/*.h
-    ${THIRD_PARTY_DIR}/GLFW/*.h
-    ${THIRD_PARTY_DIR}/imgui/*.h
-    ${THIRD_PARTY_DIR}/KHR/*.h
-)
+if(WIN32)
+  set(WINDOWS_INCLUDE ${THIRD_PARTY_DIR}/windows)
+  add_subdirectory(windows/glad)
+  
+elseif(UNIX)
+  FetchContent_Declare(
+    glfw
+    GIT_REPOSITORY https://github.com/glfw/glfw.git
+    GIT_TAG 3.3.8
+  )
+  
+  FetchContent_MakeAvailable(glfw)
+  add_subdirectory(linux/glad)
+endif()
 
-file(GLOB P_SOURCE CONFIGURE_DEPENDS 
-    ${THIRD_PARTY_DIR}/glad/glad.c
-    ${THIRD_PARTY_DIR}/imgui/*.cpp
-)
-
-add_library(IMGUI STATIC 
-    ${P_INCLUDE} 
-    ${P_SOURCE}
-)
-
-target_include_directories(IMGUI PRIVATE include
-    ${THIRD_PARTY_DIR}/glad
-    ${THIRD_PARTY_DIR}/GLFW
-    ${THIRD_PARTY_DIR}/KHR
-    ${THIRD_PARTY_DIR}/imgui
-)
-
-link_directories(${LIB_PATH}/lib)
-target_link_libraries(IMGUI ${LIB_FILES})
+add_subdirectory(imgui)
