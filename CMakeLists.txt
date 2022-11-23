@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.11)
  
-project(DETECT_SIMULATION)
+project(IMGUI_DEMO)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -9,11 +9,11 @@ include_directories(${THIRD_PARTY_DIR}/imgui)
 add_subdirectory(${THIRD_PARTY_DIR})
 
 aux_source_directory(./src SRC_DIR)
-add_executable(DETECT_SIMULATION ${SRC_DIR})
+add_executable(IMGUI_DEMO ${SRC_DIR})
 
 if(WIN32)
   target_link_libraries(
-    DETECT_SIMULATION
+    IMGUI_DEMO
     IMGUI_LIB
     ${THIRD_PARTY_DIR}/windows/lib/glfw3.lib
     ${THIRD_PARTY_DIR}/windows/lib/OpenGL32.Lib
@@ -28,7 +28,7 @@ elseif(UNIX)
   endif()
 
   target_link_libraries(
-    DETECT_SIMULATION
+    IMGUI_DEMO
     ${OPENGL_LIBRARIES}
     glfw
     IMGUI_LIB
