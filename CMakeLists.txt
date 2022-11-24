@@ -4,7 +4,7 @@ project(IMGUI_DEMO)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(THIRD_PARTY_DIR ${PROJECT_SOURCE_DIR}/include)
+set(THIRD_PARTY_DIR ${PROJECT_SOURCE_DIR}/3rdparty)
 include_directories(${THIRD_PARTY_DIR}/imgui)
 include_directories(${THIRD_PARTY_DIR}/implot)
 add_subdirectory(${THIRD_PARTY_DIR})
