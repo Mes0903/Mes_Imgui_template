@@ -6,9 +6,14 @@ The name of the `include` folder in the video is changed to `3rdparty`.
 
 This is a template of Imgui + Implot Project.  
 
-On Windwos10, it builed by Vscode, CMake. On Linux it just builed by CMake.
+On Windows10, it builed by Vscode, CMake. On Linux it just builed by CMake.
 
 If you wanna use this template, you should copy the `lib` file and dll file by yourself.
+
+# Dependencies
+
++ OpenGL    
+    On Windows, you can download it in Visual Studio.
 
 # Linux
 
@@ -35,12 +40,6 @@ There is a lib file `glfw3.lib` in the `3rdparty/windows/lib`, you should build 
 4. Open the GLFW.sln, build the project by Visual Studio.
 5. There would be a lib file called `glfw3.lib` in Debug folder, delete my `glfw3.lib` and copy your `glfw3.lib` into `3rdparty/windows/lib`.
 6. Also, there is a folder called `GLFW` in the glfw `3rdparty/windows`, delete my `GLFW` and copy your `GLFW` into `3rdparty/windows`.
-
-## OpenGL
-
-There is a lib file `OpenGL32.Lib` in the `3rdparty/windows/lib`, you should build it by yourself. (Since the lib file on the github is depends on my environment.)
-
-it's under the folder `C:\Program Files (x86)\Windows Kits\10\Lib\10.0.17763.0\um\x64` (or `x86`, depends on the edition you build), copy it to here.
 
 ## glad
 
