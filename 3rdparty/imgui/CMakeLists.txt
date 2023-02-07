@@ -5,44 +5,27 @@ file(GLOB IMGUI_INCLUDE CONFIGURE_DEPENDS
 
 if(UNIX)
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DIMGUI_IMPL_OPENGL_LOADER_GLAD2")
-
-  add_library(
-    IMGUI_LIB STATIC
-    ${IMGUI_INCLUDE}
-  )
-
-  target_link_libraries(
-    IMGUI_LIB PUBLIC
-    glfw
-    glad
-  )
-
-  target_include_directories(
-    IMGUI_LIB PUBLIC
-    ${THIRD_PARTY_DIR}/imgui
-  )
-  
-elseif(WIN32)
-  add_library(
-    IMGUI_LIB STATIC
-    ${WINDOWS_INCLUDE}/GLFW/glfw3.h
-    ${WINDOWS_INCLUDE}/GLFW/glfw3native.h
-    ${IMGUI_INCLUDE}
-  )
-
-  target_link_libraries(
-    IMGUI_LIB
-    ${WINDOWS_INCLUDE}/lib/glfw3.Lib
-    ${WINDOWS_INCLUDE}/lib/OpenGL32.Lib
-    glad
-  )
-
-  target_include_directories(
-    IMGUI_LIB PUBLIC
-    ${THIRD_PARTY_DIR}/imgui
-    ${WINDOWS_INCLUDE}
-    ${WINDOWS_INCLUDE}
-  )
 endif()
 
+add_library(
+  IMGUI_LIB STATIC
+  $<$<BOOL:${WIN32}>:${WINDOWS_INCLUDE}/GLFW/glfw3.h>
+  $<$<BOOL:${WIN32}>:${WINDOWS_INCLUDE}/GLFW/glfw3native.h>
+  ${IMGUI_INCLUDE}
+)
 
+target_link_libraries(
+  IMGUI_LIB
+  ${OPENGL_LIBRARIES}
+  $<$<BOOL:${WIN32}>:${WINDOWS_INCLUDE}/lib/glfw3.Lib>
+  $<$<BOOL:${UNIX}>:glfw>
+  glad
+)
+
+target_include_directories(
+  IMGUI_LIB PUBLIC
+  ${THIRD_DIR}/imgui
+  ${OPENGL_INCLUDE_DIRS}
+  ${WINDOWS_INCLUDE}
+  ${IMGUI_DIR}
+)

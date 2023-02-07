@@ -1,9 +1,10 @@
 include(FetchContent)
-set(IMGUI_DIR ${THIRD_PARTY_DIR}/imgui)
-set(IMPLOT_DIR ${THIRD_PARTY_DIR}/implot)
+set(IMGUI_DIR ${THIRD_DIR}/imgui)
+set(IMPLOT_DIR ${THIRD_DIR}/implot)
+set(IMFD_DIR ${THIRD_DIR}/ImGuiFileDialog)
 
 if(WIN32)
-  set(WINDOWS_INCLUDE ${THIRD_PARTY_DIR}/windows)
+  set(WINDOWS_INCLUDE ${THIRD_DIR}/windows)
   add_subdirectory(windows/glad)
   
 elseif(UNIX)
