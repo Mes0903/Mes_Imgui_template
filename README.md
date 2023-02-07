@@ -14,7 +14,8 @@ If you wanna use this template, you should copy the `lib` file and dll file by y
 
 + OpenGL    
     On Windows, you can download it in Visual Studio.
-
++ glfw  
+    On Windows, you have to build it manually.
 # Linux
 
 just clone it and build it.
