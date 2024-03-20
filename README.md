@@ -31,19 +31,30 @@ cmake --build .
 # Windows
 
 You can check the Demo Video to help you build it, it's a little complicated.
-## glfw
-
-There is a lib file `glfw3.lib` in the `3rdparty/windows/lib`, you should build it by yourself. (Since the lib file on the github is depends on my environment.)
-
-1. download the source code from [glfw](https://www.glfw.org/download).
-2. make a `build` folder and get into it (You can do it by Vscode) 
-3. cmake ..
-4. Open the GLFW.sln, build the project by Visual Studio.
-5. There would be a lib file called `glfw3.lib` in Debug folder, delete my `glfw3.lib` and copy your `glfw3.lib` into `3rdparty/windows/lib`.
-6. Also, there is a folder called `GLFW` in the glfw `3rdparty/windows`, delete my `GLFW` and copy your `GLFW` into `3rdparty/windows`.
 
 ## glad
 
 1. There is a `CMakeLists.txt` in the `3rdparty/windows/glad`, copy it to somewhere first, then delete the `3rdparty/windows` folder in the project.
 
 2. Download the glad correspond to your Opengl Version on the [glad loader website](https://glad.dav1d.de/). Then move the `glad` folder into `3rdparty/windows`.
+
+## MSVC
+
+```
+mkdir build && cd build
+cmake ..
+cmake --build
+```
+
+## mingw64
+
+I'm not quite familar with mingw, but this is how I compile with mingw64:
+
+```
+C:\mingw64\bin\cmake.EXE --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=C:\mingw64\bin\gcc.exe -DCMAKE_CXX_COMPILER:FILEPATH=C:\mingw64\bin\g++.exe -SD:/document/GitHub/Mes_Imgui_template -Bd:/document/GitHub/Mes_Imgui_template/build -G "MinGW Makefiles"
+
+cd build
+cmake --build .
+```
+
+The path of my project was `D:\document\GitHub\Mes_Imgui_template`, and the path of my mingw was `C:\mingw64`, please changed the path to yours.
