@@ -11,6 +11,25 @@ else()
   message('OPENGL_FOUND-is-false')
 endif()
 
+if(WIN32)
+  if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+    MESSAGE("==================== USING MSVC TO COMILE ====================")
+    add_compile_options(/wd4819 /wd4244 /wd4267 /wd4305 "/Zc:__cplusplus")
+    set(APP_ICON_RESOURCE_WINDOWS "${CMAKE_SOURCE_DIR}/icon/MesIcon.rc")
+    set(CMAKE_CXX_FLAGS_DEBUG "/O2")
+    set(CMAKE_CXX_FLAGS_RELEASE "/O2")
+  else()
+    MESSAGE("==================== USING MINGW TO COMILE ====================")
+    set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wa,-mbig-obj") # mingw compile flag (the output was weird idk why).
+    set(CMAKE_CXX_FLAGS_DEBUG "-O3")
+    set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+  endif()
+else()
+  set(CMAKE_CXX_FLAGS "-Wall -Wextra")
+  set(CMAKE_CXX_FLAGS_DEBUG "-g -O3")
+  set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+endif()
+
 set(THIRD_DIR ${PROJECT_SOURCE_DIR}/3rdparty)
 
 include_directories(
@@ -30,7 +49,6 @@ target_link_libraries(
   IMGUI_DEMO
   IMGUI_LIB
   IMPLOT_LIB
-  $<$<BOOL:${WIN32}>:${THIRD_DIR}/windows/lib/glfw3.lib>
-  $<$<BOOL:${UNIX}>:glfw>
+  glfw
   ${OPENGL_LIBRARIES}
 )
