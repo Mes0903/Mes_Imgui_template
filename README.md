@@ -28,6 +28,27 @@ cmake ..
 cmake --build .
 ```
 
+## wsl
+
+if you are using WSL as your environment, you may encounter the wayland-scanner error:
+
+> ... failed to find wayland-scanner
+
+In this case, you can set the cmake flag for glfw to disable wayland:
+
+```
+# 3rdparty/CMakeLists.txt
+
+if(UNIX)
+  set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+  set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+  set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+  set(GLFW_BUILD_WAYLAND OFF CACHE BOOL "" FORCE)
+endif()
+
+add_subdirectory(glfw)
+```
+
 # Windows
 
 You can check the Demo Video to help you build it, it's a little complicated.
