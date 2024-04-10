@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.11)
- 
+
 project(IMGUI_DEMO)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -31,23 +31,28 @@ endif()
 
 set(THIRD_DIR ${PROJECT_SOURCE_DIR}/3rdparty)
 
-include_directories(
-  ${THIRD_DIR}/imgui
-  ${THIRD_DIR}/implot
-  ${OPENGL_INCLUDE_DIRS}
-)
-
 add_subdirectory(${THIRD_DIR})
 
 add_executable(
-  IMGUI_DEMO 
+  ${PROJECT_NAME} 
   ${PROJECT_SOURCE_DIR}/src/imgui_demo.cpp
 )
 
+target_include_directories(
+  ${PROJECT_NAME}
+  PRIVATE
+    ${THIRD_DIR}/imgui
+    ${THIRD_DIR}/implot
+    ${THIRD_DIR}/glfw/include
+    ${THIRD_DIR}/glad/include
+    ${OPENGL_INCLUDE_DIRS}
+)
+
 target_link_libraries(
-  IMGUI_DEMO
+  ${PROJECT_NAME}
   IMGUI_LIB
   IMPLOT_LIB
   glfw
+  glad
   ${OPENGL_LIBRARIES}
 )
