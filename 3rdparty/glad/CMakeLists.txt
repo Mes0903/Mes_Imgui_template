@@ -1,7 +1,7 @@
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 add_library(
-  glad
+  glad STATIC
   src/glad.c
   include/glad/glad.h
   include/KHR/khrplatform.h
