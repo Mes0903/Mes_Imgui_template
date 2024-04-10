@@ -1,3 +1,5 @@
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 file(GLOB IMGUI_INCLUDE CONFIGURE_DEPENDS 
   ${IMGUI_DIR}/*.h
   ${IMGUI_DIR}/*.cpp
@@ -16,7 +18,6 @@ target_link_libraries(
   IMGUI_LIB
   ${OPENGL_LIBRARIES}
   glfw
-  glad
 )
 
 target_include_directories(
