@@ -1,16 +1,39 @@
-include(FetchContent)
-set(IMGUI_DIR ${THIRD_DIR}/imgui)
-set(IMPLOT_DIR ${THIRD_DIR}/implot)
-set(IMFD_DIR ${THIRD_DIR}/ImGuiFileDialog)
-
-# if(UNIX)
-#   set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE) # 禁用文檔構建
-#   set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE) # 禁用測試構建
-#   set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE) # 禁用示例構建
-#   set(GLFW_BUILD_WAYLAND OFF CACHE BOOL "" FORCE) # 禁用 Wayland 支持
-# endif()
-
+# ── glfw ──────────────────────────────────────────────────────────────────────
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory(glfw)
-add_subdirectory(glad)
-add_subdirectory(imgui)
-add_subdirectory(implot)
+
+# ── ImGui (GLFW + OpenGL3 backends) ───────────────────────────────────────────
+set(IMGUI_DIR ${CMAKE_CURRENT_SOURCE_DIR}/imgui)
+set(IMGUI_BACKENDS_DIR ${IMGUI_DIR}/backends)
+
+add_library(IMGUI_LIB STATIC
+    ${IMGUI_DIR}/imgui.cpp
+    ${IMGUI_DIR}/imgui_draw.cpp
+    ${IMGUI_DIR}/imgui_tables.cpp
+    ${IMGUI_DIR}/imgui_widgets.cpp
+    ${IMGUI_DIR}/imgui_demo.cpp
+    ${IMGUI_BACKENDS_DIR}/imgui_impl_glfw.cpp
+    ${IMGUI_BACKENDS_DIR}/imgui_impl_opengl3.cpp
+)
+
+target_include_directories(IMGUI_LIB PUBLIC
+    ${IMGUI_DIR}
+    ${IMGUI_BACKENDS_DIR}
+    ${OPENGL_INCLUDE_DIRS}
+)
+
+target_link_libraries(IMGUI_LIB PUBLIC glfw ${OPENGL_LIBRARIES})
+
+# ── ImPlot ────────────────────────────────────────────────────────────────────
+set(IMPLOT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/implot)
+
+add_library(IMPLOT_LIB STATIC
+    ${IMPLOT_DIR}/implot.cpp
+    ${IMPLOT_DIR}/implot_items.cpp
+    ${IMPLOT_DIR}/implot_demo.cpp
+)
+
+target_include_directories(IMPLOT_LIB PUBLIC ${IMPLOT_DIR})
+target_link_libraries(IMPLOT_LIB PUBLIC IMGUI_LIB)

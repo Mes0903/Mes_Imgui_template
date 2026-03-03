@@ -7,7 +7,6 @@
 #include "imgui_impl_opengl3.h"
 #include "implot.h"
 #include <stdio.h>
-#include "glad/glad.h"
 #define GL_SILENCE_DEPRECATION
 #if defined(IMGUI_IMPL_OPENGL_ES2)
 #include <GLES2/gl2.h>
@@ -18,8 +17,6 @@
   !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
 #endif
-
-#include <stdexcept>
 
 static void glfw_error_callback(int error, const char *description)
 {
@@ -51,8 +48,6 @@ int main(int, char **)
   const char *glsl_version = "#version 130";
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-  // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+
-  // only glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // 3.0+ only
 #endif
 
   // Create window with graphics context
@@ -69,24 +64,40 @@ int main(int, char **)
   ImPlot::CreateContext();
   ImGuiIO &io = ImGui::GetIO();
   (void) io;
-  // io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable
-  // Keyboard Controls io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad; //
-  // Enable Gamepad Controls
+
+  // ── CJK font loading ──────────────────────────────────────────────────────
+  // Traditional Chinese: Microsoft JhengHei (微軟正黑體)
+  // Covers full CJK Unified Ideographs block so TC-specific chars render correctly.
+  static const ImWchar tc_ranges[] = {
+    0x0020, 0x00FF,    // Basic Latin
+    0x2000, 0x206F,    // General Punctuation
+    0x3000, 0x303F,    // CJK Symbols and Punctuation
+    0x4E00, 0x9FFF,    // CJK Unified Ideographs
+    0xFF00, 0xFFEF,    // Halfwidth / Fullwidth Forms
+    0,
+  };
+  ImFont *font_tc = io.Fonts->AddFontFromFileTTF("data/msjh.ttc", 18.0f, nullptr, tc_ranges);
+
+  // Simplified Chinese: Microsoft YaHei (微软雅黑), ~2500 common chars
+  ImFont *font_sc = io.Fonts->AddFontFromFileTTF("data/msyh.ttc", 18.0f, nullptr,
+                                                  io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
+
+  // Japanese: Meiryo (メイリオ) — hiragana, katakana, and common kanji
+  ImFont *font_jp = io.Fonts->AddFontFromFileTTF("data/meiryo.ttc", 18.0f, nullptr,
+                                                  io.Fonts->GetGlyphRangesJapanese());
+  // ─────────────────────────────────────────────────────────────────────────
 
   // Setup Dear ImGui style
   ImGui::StyleColorsDark();
-  // ImGui::StyleColorsLight();
 
   // Setup Platform/Renderer backends
   ImGui_ImplGlfw_InitForOpenGL(window, true);
   ImGui_ImplOpenGL3_Init(glsl_version);
 
-  bool show_demo_window = true;
+  bool show_demo_window    = true;
   bool show_another_window = false;
+  bool show_cjk_window     = true;
   ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
-  if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
-    throw std::runtime_error("Failed to initialize GLAD");
 
   while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();
@@ -95,8 +106,6 @@ int main(int, char **)
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    // 2. Show a simple window that we create ourselves. We use a Begin/End pair
-    // to create a named window.
     if (show_demo_window) {
       ImGui::ShowDemoWindow(&show_demo_window);
       ImPlot::ShowDemoWindow(&show_demo_window);
@@ -104,20 +113,18 @@ int main(int, char **)
       static float f = 0.0f;
       static int counter = 0;
 
-      ImGui::Begin("Hello, world!");    // Create a window called "Hello, world!"
-                                        // and append into it.
+      ImGui::Begin("Hello, world!");
 
-      ImGui::Text("This is some useful text.");    // Display some text (you can
-                                                   // use a format strings too)
-      ImGui::Checkbox("Demo Window", &show_demo_window);    // Edit bools storing our window open/close state
+      ImGui::Text("This is some useful text.");
+      ImGui::Checkbox("Demo Window", &show_demo_window);
       ImGui::Checkbox("Another Window", &show_another_window);
+      ImGui::Checkbox("CJK Font Test", &show_cjk_window);
 
-      ImGui::SliderFloat("float", &f, 0.0f, 1.0f);    // Edit 1 float using a slider from 0.0f to 1.0f
-      ImGui::ColorEdit3("clear color", (float *) &clear_color);    // Edit 3 floats representing a color
+      ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+      ImGui::ColorEdit3("clear color", (float *) &clear_color);
 
-      if (ImGui::Button("Button"))    // Buttons return true when clicked (most widgets return true when edited/activated)
+      if (ImGui::Button("Button"))
         counter++;
-
       ImGui::SameLine();
       ImGui::Text("counter = %d", counter);
 
@@ -127,18 +134,50 @@ int main(int, char **)
       ImGui::End();
     }
 
-    // 3. Show another simple window.
     if (show_another_window) {
-      ImGui::Begin("Another Window", &show_another_window);    // Pass a pointer to our bool variable (the
-                                                               // window will have a closing button that will
-                                                               // clear the bool when clicked)
-
+      ImGui::Begin("Another Window", &show_another_window);
       ImGui::Text("Hello from another window!");
       if (ImGui::Button("Close Me"))
         show_another_window = false;
+      ImGui::End();
+    }
+
+    // ── CJK Font Test window ─────────────────────────────────────────────────
+    if (show_cjk_window) {
+      ImGui::Begin("CJK Font Test", &show_cjk_window);
+
+      ImGui::SeparatorText("Traditional Chinese  (Microsoft JhengHei / msjh.ttc)");
+      if (font_tc) {
+        ImGui::PushFont(font_tc);
+        ImGui::Text(u8"繁體中文：你好，世界！");
+        ImGui::PopFont();
+      } else {
+        ImGui::TextDisabled("font_tc failed to load (data/msjh.ttc missing?)");
+      }
+
+      ImGui::Spacing();
+      ImGui::SeparatorText("Simplified Chinese  (Microsoft YaHei / msyh.ttc)");
+      if (font_sc) {
+        ImGui::PushFont(font_sc);
+        ImGui::Text(u8"简体中文：你好，世界！");
+        ImGui::PopFont();
+      } else {
+        ImGui::TextDisabled("font_sc failed to load (data/msyh.ttc missing?)");
+      }
+
+      ImGui::Spacing();
+      ImGui::SeparatorText("Japanese  (Meiryo / meiryo.ttc)");
+      if (font_jp) {
+        ImGui::PushFont(font_jp);
+        ImGui::Text(u8"日本語：こんにちは、世界！");
+        ImGui::PopFont();
+      } else {
+        ImGui::TextDisabled("font_jp failed to load (data/meiryo.ttc missing?)");
+      }
 
       ImGui::End();
     }
+    // ─────────────────────────────────────────────────────────────────────────
 
     ImGui::Render();
     int display_w, display_h;
