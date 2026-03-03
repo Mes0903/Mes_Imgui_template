@@ -1,6 +1,6 @@
 # Mes_Imgui_template
 
-A template project for **Dear ImGui + ImPlot** with the OpenGL 3 + GLFW backend.
+A template project for **Dear ImGui + ImPlot** with the Vulkan + GLFW backend.
 
 ![](document/demo.png)
 

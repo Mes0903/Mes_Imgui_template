@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-find_package(OpenGL REQUIRED)
+find_package(Vulkan REQUIRED)
 
 if(MSVC)
   message(STATUS "Compiler: MSVC")
@@ -32,6 +32,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
   ${THIRD_DIR}/imgui
   ${THIRD_DIR}/implot
   ${THIRD_DIR}/glfw/include
+  ${Vulkan_INCLUDE_DIRS}
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE

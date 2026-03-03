@@ -15,16 +15,16 @@ add_library(IMGUI_LIB STATIC
     ${IMGUI_DIR}/imgui_widgets.cpp
     ${IMGUI_DIR}/imgui_demo.cpp
     ${IMGUI_BACKENDS_DIR}/imgui_impl_glfw.cpp
-    ${IMGUI_BACKENDS_DIR}/imgui_impl_opengl3.cpp
+    ${IMGUI_BACKENDS_DIR}/imgui_impl_vulkan.cpp
 )
 
 target_include_directories(IMGUI_LIB PUBLIC
     ${IMGUI_DIR}
     ${IMGUI_BACKENDS_DIR}
-    ${OPENGL_INCLUDE_DIRS}
+    ${Vulkan_INCLUDE_DIRS}
 )
 
-target_link_libraries(IMGUI_LIB PUBLIC glfw ${OPENGL_LIBRARIES})
+target_link_libraries(IMGUI_LIB PUBLIC glfw ${Vulkan_LIBRARIES})
 
 # ── ImPlot ────────────────────────────────────────────────────────────────────
 set(IMPLOT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/implot)
