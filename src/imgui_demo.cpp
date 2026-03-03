@@ -64,6 +64,8 @@ int main(int, char **)
   ImPlot::CreateContext();
   ImGuiIO &io = ImGui::GetIO();
   (void) io;
+  io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+  io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
   // ── CJK font loading ──────────────────────────────────────────────────────
   // Traditional Chinese: Microsoft JhengHei (微軟正黑體)
@@ -190,6 +192,16 @@ int main(int, char **)
 
     glClear(GL_COLOR_BUFFER_BIT);
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+    // Required when ViewportsEnable: render imgui windows that were dragged
+    // outside the main GLFW window into their own OS windows.
+    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+      GLFWwindow *backup = glfwGetCurrentContext();
+      ImGui::UpdatePlatformWindows();
+      ImGui::RenderPlatformWindowsDefault();
+      glfwMakeContextCurrent(backup);
+    }
+
     glfwSwapBuffers(window);
   }
 

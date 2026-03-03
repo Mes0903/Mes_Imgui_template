@@ -8,6 +8,7 @@
 [submodule "3rdparty/imgui"]
 	path = 3rdparty/imgui
 	url = https://github.com/ocornut/imgui.git
+	branch = docking
 [submodule "3rdparty/implot"]
 	path = 3rdparty/implot
 	url = https://github.com/epezent/implot.git
